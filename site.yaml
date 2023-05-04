@@ -6,7 +6,7 @@
 - name: Configuring HAproxy loadbalancer
   hosts: HAproxy
   become: yes
-  
+  tasks:
 
     
     
