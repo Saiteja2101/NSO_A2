@@ -6,9 +6,7 @@
 - name: Configuring HAproxy loadbalancer
   hosts: HAproxy
   become: yes
-  vars:
-      ui_pass: "{{ lookup('file', './uipassword') }}"
-  tasks:
+  
 
     
     
@@ -34,26 +32,6 @@
         dest: "/etc/haproxy/haproxy.cfg"
       notify:
         - restart haproxy
-
-    - name: install nginx, snmp, snmp-mibs-downloader
-      apt: 
-        update_cache: yes
-        name: [ 'nginx', 'snmp', 'snmp-mibs-downloader' ] 
-        state: latest
-      
-
-    - name: copy snmp conf file
-      template:
-            src: snmp.conf
-            dest: "/etc/snmp/snmp.conf"
-    - name: copy nginx config files
-      template:
-         src: nginx.conf.j2
-         dest: "/etc/nginx/nginx.conf"
-    - name: nginx start
-      service:
-        name: nginx
-        state: restarted
 
   handlers:
 
@@ -95,20 +73,6 @@
       shell: |
         cd /home/flask-app/
         gunicorn --bind 0.0.0.0:80 app:app&  
-
-    - name: install snmpd
-      apt:
-              name: snmpd
-              state: latest
-    
-    - name: cpy snmpd conf file
-      template:
-              src: snmpd.conf.j2
-              dest: "/etc/snmp/snmpd.conf"
-    - name: run snmpd
-      service:
-              name: snmpd
-              state: restarted    
 
 
 - hosts: HAproxy
