@@ -8,12 +8,6 @@
   become: yes
   tasks:
 
-    
-    
-    - name : sudo wait
-      become: yes
-      shell: while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
-
     - name: Installing HAproxy
       apt:
         name: haproxy
@@ -74,31 +68,3 @@
         cd /home/flask-app/
         gunicorn --bind 0.0.0.0:80 app:app&  
 
-
-- hosts: HAproxy
-  become: yes
-  tasks: 
-        
-        - name: test HAproxy 1
-          uri:
-                  url: "http://localhost/"
-                  return_content:  yes
-          register: html_content
-        - debug: 
-            msg: "{{ html_content.content }}"
-
-        - name: test HAproxy 2
-          uri:
-                  url: "http://localhost/"
-                  return_content:  yes
-          register: html_content
-        - debug:
-            msg: "{{ html_content.content }}"
-
-        - name: test HAproxy 3
-          uri:
-                  url: "http://localhost/"
-                  return_content:  yes
-          register: html_content
-        - debug:
-            msg: "{{ html_content.content }}"
